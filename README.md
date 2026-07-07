@@ -32,15 +32,21 @@
     .rhyme-box {
       margin: 30px auto;
       padding: 20px;
-      width: 70%;
+      width: 80%;
       background: #fff;
       border-radius: 15px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
       animation: fadeIn 2s ease;
     }
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
+    }
+    .rhyme-content {
+      width: 60%;
     }
     .rhyme-title {
       font-size: 28px;
@@ -57,6 +63,17 @@
       font-size: 20px;
       white-space: pre-line;
       color: #444;
+    }
+    .cartoon {
+      width: 200px;
+      animation: wiggle 3s infinite;
+    }
+    @keyframes wiggle {
+      0% {transform: rotate(0deg);}
+      25% {transform: rotate(5deg);}
+      50% {transform: rotate(-5deg);}
+      75% {transform: rotate(5deg);}
+      100% {transform: rotate(0deg);}
     }
     button {
       margin: 10px;
@@ -79,13 +96,17 @@
   <header>🌈 Kids Nursery Rhymes 🎵</header>
 
   <div class="rhyme-box">
-    <div class="rhyme-title" id="rhymeTitle"></div>
-    <div class="lyrics" id="lyrics"></div>
-    <audio id="audioPlayer" controls></audio>
-    <div>
-      <button onclick="prevRhyme()">⬅️ Previous</button>
-      <button onclick="nextRhyme()">Next ➡️</button>
+    <div class="rhyme-content">
+      <div class="rhyme-title" id="rhymeTitle"></div>
+      <div class="lyrics" id="lyrics"></div>
+      <audio id="audioPlayer" controls></audio>
+      <div>
+        <button onclick="prevRhyme()">⬅️ Previous</button>
+        <button onclick="nextRhyme()">Next ➡️</button>
+      </div>
     </div>
+    <!-- Cartoon image placeholder -->
+    <img src="cartoons/kid_singing.gif" alt="Cartoon Kid Singing" class="cartoon" id="cartoonImg">
   </div>
 
   <script>
@@ -93,17 +114,20 @@
       {
         title: "Rainbow Song",
         lyrics: "Red and orange, yellow too,\nGreen and blue, indigo hue,\nViolet shines at the end,\nRainbow colors, all my friends!",
-        sound: "sounds/rainbow_song.mp3"
+        sound: "sounds/rainbow_song.mp3",
+        cartoon: "cartoons/kid_singing.gif"
       },
       {
         title: "Twinkle Twinkle",
         lyrics: "Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.",
-        sound: "sounds/twinkle_song.mp3"
+        sound: "sounds/twinkle_song.mp3",
+        cartoon: "cartoons/kid_singing2.gif"
       },
       {
         title: "ABC Song",
         lyrics: "A B C D E F G,\nCome and sing along with me!\nH I J K L M N,\nLearning letters is such fun!",
-        sound: "sounds/abc_song.mp3"
+        sound: "sounds/abc_song.mp3",
+        cartoon: "cartoons/kid_singing3.gif"
       }
     ];
 
@@ -111,6 +135,7 @@
     const rhymeTitle = document.getElementById("rhymeTitle");
     const lyrics = document.getElementById("lyrics");
     const audioPlayer = document.getElementById("audioPlayer");
+    const cartoonImg = document.getElementById("cartoonImg");
 
     function showRhyme(index) {
       const rhyme = rhymes[index];
@@ -118,6 +143,7 @@
       lyrics.textContent = rhyme.lyrics;
       audioPlayer.src = rhyme.sound;
       audioPlayer.play();
+      cartoonImg.src = rhyme.cartoon;
     }
 
     function nextRhyme() {

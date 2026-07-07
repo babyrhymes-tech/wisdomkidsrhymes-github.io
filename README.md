@@ -7,15 +7,27 @@
     body {
       font-family: "Comic Sans MS", sans-serif;
       text-align: center;
-      background: linear-gradient(to bottom, #fceabb, #f8b500);
       margin: 0;
       padding: 0;
+      background: linear-gradient(270deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+      background-size: 800% 800%;
+      animation: rainbowBG 20s ease infinite;
+    }
+    @keyframes rainbowBG {
+      0% {background-position:0% 50%;}
+      50% {background-position:100% 50%;}
+      100% {background-position:0% 50%;}
     }
     header {
       background: #ff69b4;
       color: white;
       padding: 20px;
       font-size: 32px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% {transform: translateY(0);}
+      50% {transform: translateY(-10px);}
     }
     .rhyme-box {
       margin: 30px auto;
@@ -24,10 +36,21 @@
       background: #fff;
       border-radius: 15px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      animation: fadeIn 2s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
     }
     .rhyme-title {
       font-size: 28px;
       color: #333;
+      animation: pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0% {color:#333;}
+      50% {color:#ff69b4;}
+      100% {color:#333;}
     }
     .lyrics {
       margin-top: 15px;
@@ -44,9 +67,11 @@
       cursor: pointer;
       background: #4CAF50;
       color: white;
+      transition: transform 0.2s;
     }
     button:hover {
       background: #45a049;
+      transform: scale(1.1);
     }
   </style>
 </head>

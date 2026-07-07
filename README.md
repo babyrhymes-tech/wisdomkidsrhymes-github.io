@@ -1,94 +1,112 @@
-import pygame
-import sys
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kids Nursery Rhymes</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", sans-serif;
+      text-align: center;
+      background: linear-gradient(to bottom, #fceabb, #f8b500);
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #ff69b4;
+      color: white;
+      padding: 20px;
+      font-size: 32px;
+    }
+    .rhyme-box {
+      margin: 30px auto;
+      padding: 20px;
+      width: 70%;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .rhyme-title {
+      font-size: 28px;
+      color: #333;
+    }
+    .lyrics {
+      margin-top: 15px;
+      font-size: 20px;
+      white-space: pre-line;
+      color: #444;
+    }
+    button {
+      margin: 10px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <header>🌈 Kids Nursery Rhymes 🎵</header>
 
-# Initialize pygame
-pygame.init()
-pygame.mixer.init()
+  <div class="rhyme-box">
+    <div class="rhyme-title" id="rhymeTitle"></div>
+    <div class="lyrics" id="lyrics"></div>
+    <audio id="audioPlayer" controls></audio>
+    <div>
+      <button onclick="prevRhyme()">⬅️ Previous</button>
+      <button onclick="nextRhyme()">Next ➡️</button>
+    </div>
+  </div>
 
-# Screen setup
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Rainbow Rhymes & Colors")
+  <script>
+    const rhymes = [
+      {
+        title: "Rainbow Song",
+        lyrics: "Red and orange, yellow too,\nGreen and blue, indigo hue,\nViolet shines at the end,\nRainbow colors, all my friends!",
+        sound: "sounds/rainbow_song.mp3"
+      },
+      {
+        title: "Twinkle Twinkle",
+        lyrics: "Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.",
+        sound: "sounds/twinkle_song.mp3"
+      },
+      {
+        title: "ABC Song",
+        lyrics: "A B C D E F G,\nCome and sing along with me!\nH I J K L M N,\nLearning letters is such fun!",
+        sound: "sounds/abc_song.mp3"
+      }
+    ];
 
-# Colors of the rainbow
-rainbow_colors = [
-    ("Red", (255, 0, 0)),
-    ("Orange", (255, 165, 0)),
-    ("Yellow", (255, 255, 0)),
-    ("Green", (0, 128, 0)),
-    ("Blue", (0, 0, 255)),
-    ("Indigo", (75, 0, 130)),
-    ("Violet", (148, 0, 211))
-]
+    let currentIndex = 0;
+    const rhymeTitle = document.getElementById("rhymeTitle");
+    const lyrics = document.getElementById("lyrics");
+    const audioPlayer = document.getElementById("audioPlayer");
 
-# Font setup
-font = pygame.font.SysFont("Comic Sans MS", 40)
+    function showRhyme(index) {
+      const rhyme = rhymes[index];
+      rhymeTitle.textContent = rhyme.title;
+      lyrics.textContent = rhyme.lyrics;
+      audioPlayer.src = rhyme.sound;
+      audioPlayer.play();
+    }
 
-# Rhymes for each color
-rhymes = {
-    "Red": "Red is the color of an apple so sweet,\nA rainbow treat that can't be beat!",
-    "Orange": "Orange is bright like the setting sun,\nLearning colors is so much fun!",
-    "Yellow": "Yellow shines like the morning light,\nIt makes the rainbow big and bright!",
-    "Green": "Green is the grass where we love to play,\nIt makes us happy every day!",
-    "Blue": "Blue is the sky so wide and high,\nIt paints the rainbow in the sky!",
-    "Indigo": "Indigo deep like the ocean's hue,\nA special color just for you!",
-    "Violet": "Violet blooms in flowers fair,\nA rainbow color beyond compare!"
-}
+    function nextRhyme() {
+      currentIndex = (currentIndex + 1) % rhymes.length;
+      showRhyme(currentIndex);
+    }
 
-# Sound files (replace with your actual audio file paths)
-sounds = {
-    "Red": "sounds/red_song.wav",
-    "Orange": "sounds/orange_song.wav",
-    "Yellow": "sounds/yellow_song.wav",
-    "Green": "sounds/green_song.wav",
-    "Blue": "sounds/blue_song.wav",
-    "Indigo": "sounds/indigo_song.wav",
-    "Violet": "sounds/violet_song.wav"
-}
+    function prevRhyme() {
+      currentIndex = (currentIndex - 1 + rhymes.length) % rhymes.length;
+      showRhyme(currentIndex);
+    }
 
-# Function to play rhyme sound
-def play_rhyme(color_name):
-    pygame.mixer.music.stop()
-    pygame.mixer.music.load(sounds[color_name])
-    pygame.mixer.music.play()
-
-# Main loop
-current_index = 0
-clock = pygame.time.Clock()
-
-# Play first rhyme at start
-play_rhyme(rainbow_colors[current_index][0])
-
-while True:
-    screen.fill((255, 255, 255))
-
-    # Get current color
-    color_name, color_value = rainbow_colors[current_index]
-
-    # Draw rectangle of the color
-    pygame.draw.rect(screen, color_value, (200, 100, 400, 200))
-
-    # Display color name
-    text_surface = font.render(color_name, True, (0, 0, 0))
-    screen.blit(text_surface, (350, 320))
-
-    # Display rhyme
-    rhyme_lines = rhymes[color_name].split("\n")
-    for i, line in enumerate(rhyme_lines):
-        rhyme_surface = font.render(line, True, (0, 0, 0))
-        screen.blit(rhyme_surface, (100, 400 + i * 50))
-
-    # Event handling
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                current_index = (current_index + 1) % len(rainbow_colors)
-                play_rhyme(rainbow_colors[current_index][0])
-            elif event.key == pygame.K_LEFT:
-                current_index = (current_index - 1) % len(rainbow_colors)
-                play_rhyme(rainbow_colors[current_index][0])
-
-    pygame.display.flip()
-    clock.tick(30)
+    // Show first rhyme on load
+    showRhyme(currentIndex);
+  </script>
+</body>
+</html>
